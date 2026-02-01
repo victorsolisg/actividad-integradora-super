@@ -4,6 +4,7 @@
 // Aqui guardo todos los items
 var listaItems = [];
 var contadorId = 0;
+var LLAVE = 'organizadorCompras'; // Para guardar en localStorage
 
 // Agarro los elementos del HTML
 var frm = document.getElementById('frm');
@@ -122,6 +123,7 @@ function agregarALista(nombre, cantidad) {
     listaItems.push(item);
     dibujarItem(item);
     calcularNumeros();
+    guardarDatos();
 }
 
 // Cambio si esta listo o no
@@ -143,6 +145,7 @@ function cambiarEstado(id) {
         }
     }
     calcularNumeros();
+    guardarDatos();
 }
 
 // Quito un item de la lista
@@ -163,6 +166,7 @@ function quitarItem(id) {
     elemento.remove();
 
     calcularNumeros();
+    guardarDatos();
 }
 
 // Limpio los campos del formulario
@@ -170,6 +174,33 @@ function limpiarCampos() {
     txtNombre.value = '';
     txtCantidad.value = '';
     txtNombre.focus();
+}
+
+// Guardo los datos en localStorage
+function guardarDatos() {
+    var texto = JSON.stringify(listaItems);
+    localStorage.setItem(LLAVE, texto);
+}
+
+// Recupero los datos guardados
+function recuperarDatos() {
+    var texto = localStorage.getItem(LLAVE);
+
+    // Si hay algo guardado lo cargo
+    if (texto !== null) {
+        var datos = JSON.parse(texto);
+
+        for (var i = 0; i < datos.length; i++) {
+            var item = datos[i];
+            listaItems.push(item);
+            dibujarItem(item);
+
+            // Actualizo el contador para que no se repitan ids
+            if (item.id > contadorId) {
+                contadorId = item.id;
+            }
+        }
+    }
 }
 
 // Cuando envian el formulario
@@ -196,4 +227,5 @@ frm.onsubmit = function(evento) {
 };
 
 // Inicio la app
+recuperarDatos();
 calcularNumeros();
