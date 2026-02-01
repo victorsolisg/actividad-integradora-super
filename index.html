@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Organizador de compras">
+    <meta name="author" content="Victor Solis">
+    <title>Organizador de Compras</title>
+    <link rel="stylesheet" href="estilos/app.css">
+</head>
+<body>
+    <!-- Cabecera -->
+    <header>
+        <h1>Organizador de Compras</h1>
+    </header>
+
+    <!-- Contenido -->
+    <main>
+        <!-- Agregar items -->
+        <section class="caja" id="caja-agregar">
+            <h2>Agregar Item</h2>
+            <form id="frm">
+                <!-- Nombre -->
+                <div class="grupo">
+                    <label for="txtNombre">Nombre:</label>
+                    <input type="text" id="txtNombre" placeholder="Ej: Pan">
+                </div>
+                <!-- Cantidad -->
+                <div class="grupo">
+                    <label for="txtCantidad">Cantidad:</label>
+                    <input type="number" id="txtCantidad" min="1" placeholder="1">
+                </div>
+                <!-- Boton -->
+                <button type="submit" class="boton-principal">Agregar</button>
+            </form>
+            <!-- Aviso -->
+            <div id="aviso"></div>
+        </section>
+
+        <!-- Items -->
+        <section class="caja" id="caja-items">
+            <h2>Items</h2>
+            <!-- Resumen -->
+            <div class="resumen">
+                <p>Total: <span id="numTotal">0</span></p>
+                <p>Listos: <span id="numListos">0</span></p>
+                <p>Faltan: <span id="numFaltan">0</span></p>
+            </div>
+            <!-- Listado -->
+            <div id="listado"></div>
+            <!-- Sin items -->
+            <p id="sinItems">No tienes items</p>
+        </section>
+    </main>
+
+    <!-- Pie -->
+    <footer>
+        <p>Victor Solis - 2026</p>
+    </footer>
+
+    <script src="scripts/app.js"></script>
+</body>
+</html>
