@@ -29,27 +29,80 @@ function crearItem(nombre, cantidad) {
     return nuevoItem;
 }
 
-// Reviso que los campos esten bien
+// Limpio los errores visuales
+function limpiarErrores() {
+    aviso.textContent = '';
+    aviso.style.color = '';
+    txtNombre.style.border = '';
+    txtCantidad.style.border = '';
+}
+
+// Muestro el mensaje de error
+function mostrarAviso(texto, esError) {
+    aviso.textContent = texto;
+    if (esError) {
+        aviso.style.color = '#d35f5f';
+    } else {
+        aviso.style.color = '#5a9a8a';
+    }
+}
+
+// Valido el nombre en tiempo real
+txtNombre.addEventListener('input', function() {
+    var nombre = txtNombre.value.trim();
+
+    if (nombre === '') {
+        txtNombre.style.border = '2px solid #d35f5f';
+        mostrarAviso('Debes escribir un nombre', true);
+    } else if (nombre.length < 2) {
+        txtNombre.style.border = '2px solid #d35f5f';
+        mostrarAviso('El nombre debe tener al menos 2 caracteres', true);
+    } else {
+        txtNombre.style.border = '2px solid #5a9a8a';
+        mostrarAviso('Nombre valido', false);
+    }
+});
+
+// Valido la cantidad en tiempo real
+txtCantidad.addEventListener('input', function() {
+    var cantidad = txtCantidad.value;
+
+    if (cantidad === '' || parseInt(cantidad) < 1) {
+        txtCantidad.style.border = '2px solid #d35f5f';
+        mostrarAviso('La cantidad debe ser mayor a cero', true);
+    } else {
+        txtCantidad.style.border = '2px solid #5a9a8a';
+        mostrarAviso('Cantidad valida', false);
+    }
+});
+
+// Reviso que los campos esten bien antes de enviar
 function revisarCampos() {
     var nombre = txtNombre.value.trim();
     var cantidad = txtCantidad.value;
 
     // Si no escribio nada
     if (nombre === '') {
+        txtNombre.style.border = '2px solid #d35f5f';
+        txtNombre.focus();
         return 'Debes escribir un nombre';
+    }
+
+    // Si el nombre es muy corto
+    if (nombre.length < 2) {
+        txtNombre.style.border = '2px solid #d35f5f';
+        txtNombre.focus();
+        return 'El nombre debe tener al menos 2 caracteres';
     }
 
     // Si la cantidad no es valida
     if (cantidad === '' || parseInt(cantidad) < 1) {
+        txtCantidad.style.border = '2px solid #d35f5f';
+        txtCantidad.focus();
         return 'La cantidad debe ser mayor a cero';
     }
 
     return '';
-}
-
-// Muestro el mensaje de error
-function mostrarAviso(texto) {
-    aviso.textContent = texto;
 }
 
 // Cuento cuantos items hay y actualizo los numeros
@@ -173,7 +226,10 @@ function quitarItem(id) {
 function limpiarCampos() {
     txtNombre.value = '';
     txtCantidad.value = '';
+    txtNombre.style.border = '';
+    txtCantidad.style.border = '';
     txtNombre.focus();
+    limpiarErrores();
 }
 
 // Guardo los datos en localStorage
@@ -204,18 +260,16 @@ function recuperarDatos() {
 }
 
 // Cuando envian el formulario
-frm.onsubmit = function(evento) {
+frm.addEventListener('submit', function(evento) {
     evento.preventDefault();
 
     var error = revisarCampos();
 
     // Si hay error lo muestro
     if (error !== '') {
-        mostrarAviso(error);
+        mostrarAviso(error, true);
         return;
     }
-
-    mostrarAviso('');
 
     // Agarro los valores
     var nombre = txtNombre.value.trim();
@@ -224,7 +278,8 @@ frm.onsubmit = function(evento) {
     // Agrego y limpio
     agregarALista(nombre, cantidad);
     limpiarCampos();
-};
+    mostrarAviso('Producto agregado correctamente', false);
+});
 
 // Inicio la app
 recuperarDatos();
