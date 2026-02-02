@@ -30,14 +30,16 @@ header h1 {
     font-weight: normal;
 }
 
-/* Contenido centrado */
+/* Contenido centrado en horizontal */
 main {
     flex: 1;
     padding: 25px 15px;
     display: flex;
-    flex-direction: column;
-    align-items: center;
+    flex-direction: row;
+    justify-content: center;
+    align-items: flex-start;
     gap: 20px;
+    flex-wrap: wrap;
 }
 
 /* Tarjetas blancas */
@@ -198,7 +200,12 @@ footer {
 }
 
 /* Pantallas chicas */
-@media (max-width: 400px) {
+@media (max-width: 768px) {
+    main {
+        flex-direction: column;
+        align-items: center;
+    }
+
     .resumen {
         flex-direction: column;
         text-align: center;
